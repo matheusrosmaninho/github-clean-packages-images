@@ -7,7 +7,7 @@ import (
 	"github.com/matheusrosmaninho/github-clean-packages-images/usecase"
 )
 
-func Start(repoToken, organization, packagesMonitoredString, packageType string) error {
+func Start(repoToken, organization, packagesMonitoredString, packageType string, numberVersionsKeep int) error {
 	packagesMonitored, err := usecase.NewPackageMonitored(packagesMonitoredString)
 	if err != nil {
 		return err
@@ -18,6 +18,11 @@ func Start(repoToken, organization, packagesMonitoredString, packageType string)
 		if err != nil {
 			return err
 		}
+
+		if numberVersionsKeep >= len(packageVersions) {
+			continue
+		}
+
 		message := fmt.Sprintf("Package %s has %d versions", p, len(packageVersions))
 		fmt.Println(message)
 		fmt.Println("----------------------")
