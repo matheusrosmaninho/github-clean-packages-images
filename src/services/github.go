@@ -71,3 +71,36 @@ func GetPackagesVersions(repoToken, organization, packageType, packageName strin
 
 	return packages, nil
 }
+
+func DeletePackageVersion(repoToken, organization, packageType, packageName string, packageVersionId int) error {
+	client := &http.Client{}
+	url := fmt.Sprintf("%s/orgs/%s/packages/%s/%s/versions/%d", GITHUB_API_URL, organization, packageType, packageName, packageVersionId)
+
+	req, err := http.NewRequest("DELETE", url, nil)
+	if err != nil {
+		return errors.New("error creating request: " + err.Error())
+	}
+
+	for key, value := range headersBase {
+		req.Header.Set(key, value)
+	}
+	req.Header.Add("Authorization", "Bearer "+repoToken)
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return errors.New("error making request: " + err.Error())
+	}
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return errors.New("error reading response: " + err.Error())
+	}
+
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		fmt.Println(url)
+		return errors.New("error response status: " + resp.Status + string(body))
+	}
+
+	return nil
+}

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"strconv"
 
@@ -25,8 +26,12 @@ func main() {
 		panic(err)
 	}
 
+	fmt.Println("Starting the process to clean the images ...")
+
 	err = controller.Start(repoToken, organization, packagesMonitored, packageType, numberVersionsKeep)
 	if err != nil {
 		panic(err)
 	}
+
+	fmt.Println("Process finished successfully!")
 }
