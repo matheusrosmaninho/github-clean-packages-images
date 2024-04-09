@@ -4,13 +4,23 @@ import (
 	"fmt"
 
 	"github.com/matheusrosmaninho/github-clean-packages-images/services"
+	"github.com/matheusrosmaninho/github-clean-packages-images/usecase"
 )
 
 func Start(repoToken, organization, packagesMonitoredString, packageType string) error {
-	packageVersions, err := services.GetPackagesVersions(repoToken, organization, packageType, packagesMonitoredString)
+	packagesMonitored, err := usecase.NewPackageMonitored(packagesMonitoredString)
 	if err != nil {
 		return err
 	}
-	fmt.Println(packageVersions)
+
+	for _, p := range packagesMonitored.Values {
+		packageVersions, err := services.GetPackagesVersions(repoToken, organization, packageType, p)
+		if err != nil {
+			return err
+		}
+		message := fmt.Sprintf("Package %s has %d versions", p, len(packageVersions))
+		fmt.Println(message)
+		fmt.Println("----------------------")
+	}
 	return nil
 }
