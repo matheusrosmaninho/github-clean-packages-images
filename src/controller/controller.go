@@ -14,7 +14,6 @@ func Start(repoToken, organization, packagesMonitoredString, packageType string,
 	}
 
 	for _, p := range packagesMonitored.Values {
-		fmt.Printf("Cleaning the images of the package %s ...\n", p)
 		numberVersionsKeep := numberVersions
 		packageVersions, err := services.GetPackagesVersions(repoToken, organization, packageType, p)
 		if err != nil {
@@ -25,7 +24,8 @@ func Start(repoToken, organization, packagesMonitoredString, packageType string,
 
 		if numberVersionsKeep >= len(packageVersions) {
 			fmt.Printf("The package %s has less versions than the number of versions to keep ...\n", p)
-			return nil
+			fmt.Println("----------------------------------------")
+			continue
 		}
 
 		for _, packageVersion := range packageVersions {
@@ -52,6 +52,7 @@ func Start(repoToken, organization, packagesMonitoredString, packageType string,
 			fmt.Printf("The version %s of the package %s was deleted ...\n", packageVersion.Name, p)
 			numberVersionsKeep--
 		}
+		fmt.Println("----------------------------------------")
 	}
 	return nil
 }
