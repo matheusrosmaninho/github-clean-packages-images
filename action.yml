@@ -1,0 +1,29 @@
+name: "Github clear package registry"
+description: "Remove all old packages from the Github package registry"
+inputs:
+  repo_token:
+    description: "The token to use for authentication"
+    required: true
+  organization:
+    description: "The organization name to use"
+    required: true
+  list_package_monitored:
+    description: "The list of package to check to clear"
+    required: true
+  package_type:
+    description: "The type of package to clear"
+    required: false
+    default: "container"
+  number_versions:
+    description: "The number of versions to keep"
+    required: false
+    default: "1"
+runs:
+  using: "docker"
+  image: "Dockerfile"
+  args:
+    - ${{ inputs.repo_token }}
+    - ${{ inputs.organization }}
+    - ${{ inputs.list_package_monitored }}
+    - ${{ inputs.package_type }}
+    - ${{ inputs.number_versions }}
