@@ -1,4 +1,4 @@
-# Github clean packages registry images
+# Github clean package versions
 
 > Por enquanto funciona somente com organizações
 
@@ -14,8 +14,20 @@ Este projeto visa facilitar a gestão de pacotes hospedados no GitHub Registry. 
 | package_type | Tipo dos pacotes informados. Ex: container, npm, ... | Não | container |
 | number_versions | Número de versões do pacote que se deseja manter | Não | 1 |
 
-# Contribuição
+## Example
+
+```
+- name: Github clear package registry
+  uses: matheusrosmaninho/github-clean-packages-versions@v1
+  with:
+    repo_token: "${{ secrets.GITHUB_TOKEN }}"
+    organization: "terminalbaka"
+    list_package_monitored: "traefik-production"
+
+```
+
+## Contribuição
 Contribuições são bem-vindas! Sinta-se à vontade para abrir issues relatando problemas ou propor novas funcionalidades. Se desejar contribuir diretamente, por favor, siga os padrões estabelecidos para solicitações de pull.
 
-# Licença
+## Licença
 Este projeto está licenciado sob a Licença MIT.
